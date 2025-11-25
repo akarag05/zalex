@@ -3,15 +3,13 @@ package com.zalex.employee_certification.mappers;
 import com.zalex.employee_certification.constants.CertificateConstants;
 import com.zalex.employee_certification.dtos.CertificateDto;
 import com.zalex.employee_certification.entities.Certificate;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CertificateMapper {
-
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
-
     public static CertificateDto mapToCertificateDto(Certificate certificate) {
         String issuedOnString = certificate.getIssuedOn() != null 
                 ? CertificateConstants.DATE_FORMAT.format(certificate.getIssuedOn())
@@ -29,9 +27,10 @@ public class CertificateMapper {
         Date issuedOnDate = null;
         if (certificateDto.getIssuedOn() != null && !certificateDto.getIssuedOn().isEmpty()) {
             try {
+                CertificateConstants.DATE_FORMAT.setLenient(false);
                 issuedOnDate = CertificateConstants.DATE_FORMAT.parse(certificateDto.getIssuedOn());
             } catch (ParseException e) {
-                throw new IllegalArgumentException("Invalid date format. Expected format: M/d/yyyy (e.g., 12/9/2022)", e);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format. Expected format: M/d/yyyy (e.g., 12/9/2022)");
             }
         }
         
@@ -40,7 +39,7 @@ public class CertificateMapper {
             try {
                 employeeId = Integer.parseInt(certificateDto.getEmployeeId());
             } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Invalid employeeId format. Expected integer.", e);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid employeeId format. Expected integer.");
             }
         }
         
