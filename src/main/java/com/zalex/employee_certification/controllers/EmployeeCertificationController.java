@@ -33,7 +33,7 @@ public class EmployeeCertificationController {
         try {
             Integer userId = Integer.parseInt(userIdString);
             CertificateDto foundCertificate = certificateService.getCertificateById(id, userId);
-            return new ResponseEntity<>(foundCertificate, HttpStatus.FOUND);
+            return new ResponseEntity<>(foundCertificate, HttpStatus.OK);
         } catch (NumberFormatException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid user");
         }
