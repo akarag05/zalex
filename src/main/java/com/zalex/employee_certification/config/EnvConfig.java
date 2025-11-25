@@ -27,11 +27,12 @@ public class EnvConfig {
                 .filename(envFileName)
                 .ignoreIfMissing()
                 .load();
-            
             // Load variables from .env file into system properties for Spring Boot
             String dbUrl = dotenv.get("DB_URL");
             String dbUsername = dotenv.get("DB_USERNAME");
             String dbPassword = dotenv.get("DB_PASSWORD");
+            String apiKeyHeader = dotenv.get("ZALEX_API_KEY_HEADER");
+            String apiKey = dotenv.get("ZALEX_API_KEY");
             
             if (dbUrl != null) {
                 System.setProperty("DB_URL", dbUrl);
@@ -42,6 +43,14 @@ public class EnvConfig {
             if (dbPassword != null) {
                 System.setProperty("DB_PASSWORD", dbPassword);
             }
+            if(apiKeyHeader != null) {
+                System.setProperty("ZALEX_API_KEY_HEADER", apiKeyHeader);
+            }
+            if(apiKey != null) {
+                System.setProperty("ZALEX_API_KEY", apiKey);
+            }
+
+
         } catch (Exception e) {
             // If .env file doesn't exist, continue with default configuration
             System.out.println("Note: " + envFileName + " not found. Using default configuration.");
