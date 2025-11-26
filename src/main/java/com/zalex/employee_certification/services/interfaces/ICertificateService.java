@@ -8,9 +8,9 @@ import java.util.List;
 public interface ICertificateService {
     CertificateDto createCertificate(CertificateDto certificateDto);
 
-    CertificateDto getCertificateById(Long id, Integer userId);
+    CertificateDto getCertificateById(Long id, String employeeIdString);
 
     List<CertificateDto> getAllCertificates(CertificateQueryDto certificateQueryDto);
 
-    CertificateDto updateCertificate(Long id, Integer userId, String purpose);
+    CertificateDto updateCertificate(Long id, String purpose);
 }

@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CertificateRepository extends JpaRepository<Certificate, Long>, JpaSpecificationExecutor<Certificate> {
+public interface ICertificateRepository extends JpaRepository<Certificate, Long>, JpaSpecificationExecutor<Certificate> {
 }
