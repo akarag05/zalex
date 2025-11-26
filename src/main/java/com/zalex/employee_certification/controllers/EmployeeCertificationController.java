@@ -5,11 +5,9 @@ import com.zalex.employee_certification.dtos.CertificateQueryDto;
 import com.zalex.employee_certification.dtos.UpdatePurposeDto;
 import com.zalex.employee_certification.services.implementation.CertificateService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -29,28 +27,18 @@ public class EmployeeCertificationController {
 
     @GetMapping("{id}")
     public ResponseEntity<CertificateDto> getCertificateById(@PathVariable("id") Long id,
-                                                             @RequestHeader("userId") String userIdString) {
-        try {
-            Integer userId = Integer.parseInt(userIdString);
-            CertificateDto foundCertificate = certificateService.getCertificateById(id, userId);
-            return new ResponseEntity<>(foundCertificate, HttpStatus.OK);
-        } catch (NumberFormatException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid user");
-        }
+                                                             @RequestHeader(value = "employeeId", required = false) String employeeIdString) {
+
+        CertificateDto foundCertificate = certificateService.getCertificateById(id, employeeIdString);
+        return new ResponseEntity<>(foundCertificate, HttpStatus.OK);
     }
 
     @PatchMapping("{id}")
     public ResponseEntity<CertificateDto> updatePurpose(@PathVariable("id") Long id,
-                                                        @RequestHeader("userId") String userIdString,
                                                         @RequestBody UpdatePurposeDto updatePurposeDto) {
 
-        try {
-            Integer userId = Integer.parseInt(userIdString);
-            CertificateDto foundCertificate = certificateService.updateCertificate(id, userId, updatePurposeDto.getPurpose());
-            return new ResponseEntity<>(foundCertificate, HttpStatus.OK);
-        } catch (NumberFormatException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid user");
-        }
+        CertificateDto foundCertificate = certificateService.updateCertificate(id, updatePurposeDto.getPurpose());
+        return new ResponseEntity<>(foundCertificate, HttpStatus.OK);
     }
 
     @PostMapping("/all")

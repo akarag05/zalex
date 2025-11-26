@@ -30,7 +30,7 @@ public class CertificateMapper {
                 CertificateConstants.DATE_FORMAT.setLenient(false);
                 issuedOnDate = CertificateConstants.DATE_FORMAT.parse(certificateDto.getIssuedOn());
             } catch (ParseException e) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format. Expected format: M/d/yyyy (e.g., 12/9/2022)");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format. Expected format: MM/dd/yyyy (e.g., 12/09/2022)");
             }
         }
         

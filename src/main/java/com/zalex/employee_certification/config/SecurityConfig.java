@@ -2,6 +2,7 @@ package com.zalex.employee_certification.config;
 
 import com.zalex.employee_certification.security.AuthenticationFilter;
 import com.zalex.employee_certification.services.implementation.AuthenticationService;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -20,13 +21,10 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class SecurityConfig {
     
     private final AuthenticationService authenticationService;
-    
-    public SecurityConfig(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
     
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
