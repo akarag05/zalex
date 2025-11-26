@@ -86,7 +86,7 @@ public class CertificateService implements ICertificateService {
 
     @Override
     public CertificateDto updateCertificate(Long id, String purpose) {
-        Optional<String> validationResult = validationHelper.getIssuedOnError(purpose, true);
+        Optional<String> validationResult = validationHelper.getPurposeError(purpose, true);
         if (validationResult.isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, validationResult.get());
         }

@@ -76,7 +76,7 @@ public class ValidationHelper implements IValidationHelper {
         if(issuedOn == null && isMandatory) {
             return "Issued on is a required field".describeConstable();
         } else if(issuedOn != null && !isIssuedOnValid(issuedOn)) {
-            return "Issued on must be a date in the future".describeConstable();
+            return "Issued on must be a valid date in the future. Expected format: MM/dd/yyyy (e.g., 12/09/2022)".describeConstable();
         }
         return Optional.empty();
     }
@@ -100,6 +100,9 @@ public class ValidationHelper implements IValidationHelper {
     }
 
     private boolean isIssuedOnValid(String issuedOn) {
+        if (!issuedOn.matches(CertificateConstants.DATE_FORMAT_REGEX)) {
+            return false;
+        }
         try {
             CertificateConstants.DATE_FORMAT.setLenient(false);
             Date issuedOnDate = CertificateConstants.DATE_FORMAT.parse(issuedOn);

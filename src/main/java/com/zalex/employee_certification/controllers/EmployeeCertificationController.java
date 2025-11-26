@@ -27,7 +27,7 @@ public class EmployeeCertificationController {
 
     @GetMapping("{id}")
     public ResponseEntity<CertificateDto> getCertificateById(@PathVariable("id") Long id,
-                                                             @RequestHeader("employeeId") String employeeIdString) {
+                                                             @RequestHeader(value = "employeeId", required = false) String employeeIdString) {
 
         CertificateDto foundCertificate = certificateService.getCertificateById(id, employeeIdString);
         return new ResponseEntity<>(foundCertificate, HttpStatus.OK);
