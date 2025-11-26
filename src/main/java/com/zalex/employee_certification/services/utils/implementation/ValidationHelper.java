@@ -40,9 +40,11 @@ public class ValidationHelper implements IValidationHelper {
         List<String> errors = new ArrayList<>();
         Optional<String> addressToError = this.getAddressToError(certificateQueryDto.getAddressTo(), false);
         Optional<String> employeeIdError = this.getEmployeeIdError(certificateQueryDto.getEmployeeId(), false);
+        Optional<String> pageError = this.getPageError(certificateQueryDto.getPage(), false);
 
         addressToError.ifPresent(errors::add);
         employeeIdError.ifPresent(errors::add);
+        pageError.ifPresent(errors::add);
 
         if(errors.isEmpty()) {
             return Optional.empty();
@@ -84,9 +86,19 @@ public class ValidationHelper implements IValidationHelper {
     @Override
     public Optional<String> getEmployeeIdError(String employeeId, boolean isMandatory) {
         if(employeeId == null && isMandatory) {
-            return"Employee id is a required field".describeConstable();
+            return "Employee id is a required field".describeConstable();
         } else if(employeeId != null && !isEmployeeIdValid(employeeId)) {
-            return"Employee id is a numeric field".describeConstable();
+            return "Employee id is a numeric field".describeConstable();
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<String> getPageError(Integer page, boolean isMandatory) {
+        if(page == null && isMandatory) {
+            return "Page is a required field".describeConstable();
+        } else if(page != null && page < 0) {
+            return "Page cannot be negative".describeConstable();
         }
         return Optional.empty();
     }

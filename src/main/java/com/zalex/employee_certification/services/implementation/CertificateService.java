@@ -52,17 +52,21 @@ public class CertificateService implements ICertificateService {
         }
 
         Optional<Certificate> dbResult = certificateRepository.findById(id);
+        Integer employeeId = null;
         try {
-            Integer employeeId = Integer.parseInt(employeeIdString);
-            if(dbResult.isPresent() && dbResult.get().getEmployeeId().equals(employeeId)) {
-                return CertificateMapper.mapToCertificateDto(dbResult.get());
-            }
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Document does not exist for user.");
+            employeeId = Integer.parseInt(employeeIdString);
         } catch (RuntimeException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "Something went wrong when parsing employeeId: " + employeeIdString);
         }
 
+        if(dbResult.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Document does not exist.");
+        }
+        if(dbResult.get().getEmployeeId().equals(employeeId)) {
+            return CertificateMapper.mapToCertificateDto(dbResult.get());
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Document does not exist for user.");
     }
 
     @Override

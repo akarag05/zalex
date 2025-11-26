@@ -12,4 +12,5 @@ public interface IValidationHelper {
     Optional<String> getPurposeError(String purpose, boolean isMandatory);
     Optional<String> getIssuedOnError(String issuedOn, boolean isMandatory);
     Optional<String> getEmployeeIdError(String employeeId, boolean isMandatory);
+    Optional<String> getPageError(Integer page, boolean isMandatory);
 }
