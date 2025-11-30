@@ -5,6 +5,8 @@ import com.zalex.employee_certification.dtos.CertificateQueryDto;
 import com.zalex.employee_certification.entities.Certificate;
 import com.zalex.employee_certification.mappers.CertificateMapper;
 import com.zalex.employee_certification.repositories.ICertificateRepository;
+import com.zalex.employee_certification.services.commands.implementation.CreationCommand;
+import com.zalex.employee_certification.services.dms.CreationContextDM;
 import com.zalex.employee_certification.services.utils.interfaces.ICertificateQueryHelper;
 import com.zalex.employee_certification.services.interfaces.ICertificateService;
 import com.zalex.employee_certification.services.utils.interfaces.IValidationHelper;
@@ -28,20 +30,13 @@ public class CertificateService implements ICertificateService {
     private ICertificateRepository certificateRepository;
     private ICertificateQueryHelper certificateQueryHelper;
     private IValidationHelper validationHelper;
+    private CreationCommand creationCommand;
 
     @Override
     public CertificateDto createCertificate(CertificateDto certificateDto) {
-        Optional<String> validationResult = validationHelper.getCreationValidationErrors(certificateDto);
-
-        if (validationResult.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, validationResult.get());
-        }
-
-        Certificate certificate = CertificateMapper.mapToCertificate(certificateDto);
-
-        Certificate savedCertificate = certificateRepository.save(certificate);
-
-        return CertificateMapper.mapToCertificateDto(savedCertificate);
+        CreationContextDM context = new CreationContextDM();
+        context.setRequestDto(certificateDto);
+        return creationCommand.execute(context);
     }
 
     @Override
